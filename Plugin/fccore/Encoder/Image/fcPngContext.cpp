@@ -246,6 +246,20 @@ bool fcPngContext::exportTask(fcPngTaskData& data)
     }
 
     ::png_init_io(png_ptr, ofile);
+
+    {
+        const auto isDefault = [](int x) -> bool {
+            return (x == fcPngConfig::DefaultValue);
+        };
+        if (!isDefault(m_conf.image_filters          )) { ::png_set_filter(png_ptr, PNG_FILTER_TYPE_BASE, m_conf.image_filters          ); }
+        if (!isDefault(m_conf.compression_buffer_size)) { ::png_set_compression_buffer_size(png_ptr     , m_conf.compression_buffer_size); }
+        if (!isDefault(m_conf.compression_strategy   )) { ::png_set_compression_strategy   (png_ptr     , m_conf.compression_strategy   ); }
+        if (!isDefault(m_conf.compression_level      )) { ::png_set_compression_level      (png_ptr     , m_conf.compression_level      ); }
+        if (!isDefault(m_conf.compression_mem_level  )) { ::png_set_compression_mem_level  (png_ptr     , m_conf.compression_mem_level  ); }
+        if (!isDefault(m_conf.compression_window_bits)) { ::png_set_compression_window_bits(png_ptr     , m_conf.compression_window_bits); }
+        if (!isDefault(m_conf.compression_method     )) { ::png_set_compression_method     (png_ptr     , m_conf.compression_method     ); }
+    }
+
     ::png_set_IHDR(png_ptr, info_ptr, data.width, data.height, bit_depth, color_type, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
     ::png_write_info(png_ptr, info_ptr);
 

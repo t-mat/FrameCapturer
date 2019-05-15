@@ -120,8 +120,18 @@ enum class fcPngPixelFormat
 
 struct fcPngConfig
 {
+    static const int DefaultValue = -1;
+
     fcPngPixelFormat pixel_format = fcPngPixelFormat::Auto;
     int max_tasks = 4;
+
+    int image_filters           = DefaultValue;
+    int compression_level       = DefaultValue;
+    int compression_mem_level   = DefaultValue;
+    int compression_strategy    = DefaultValue;
+    int compression_window_bits = DefaultValue;
+    int compression_method      = DefaultValue;
+    int compression_buffer_size = DefaultValue;
 };
 
 fcAPI bool            fcPngIsSupported();

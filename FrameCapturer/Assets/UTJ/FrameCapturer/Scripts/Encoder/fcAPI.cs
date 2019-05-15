@@ -165,15 +165,43 @@ namespace UTJ.FrameCapturer
             UInt16,
         };
 
+        public enum fcPngCompressionMode
+        {
+            Default,
+            Fast,
+            Slow,
+        }
+
+        [Flags]
+        public enum fcPngImageFilters : int
+        {
+            Default    = -1,
+            NoFilters  = 0x00,
+            None       = 0x08,
+            Sub        = 0x10,
+            Up         = 0x20,
+            Avg        = 0x40,
+            Paeth      = 0x80,
+            AllFilters = (None | Sub | Up | Avg | Paeth),
+        }
+
         [Serializable]
         public struct fcPngConfig
         {
             public fcPngPixelFormat pixelFormat;
             [Range(1, 32)] public int maxTasks;
+            [HideInInspector] public fcPngImageFilters imageFilters;
+            [HideInInspector] public int compressionLevel;
+            [HideInInspector] public int compressionMemLevel;
+            [HideInInspector] public int compressionStrategy;
+            [HideInInspector] public int compressionWindowBits;
+            [HideInInspector] public int compressionMethod;
+            [HideInInspector] public int compressionBufferSize;
             // C# ext
             [HideInInspector] public int width;
             [HideInInspector] public int height;
             [HideInInspector] public int channels;
+            public fcPngCompressionMode compressionMode;
 
             public static fcPngConfig default_value
             {
@@ -183,6 +211,13 @@ namespace UTJ.FrameCapturer
                     {
                         pixelFormat = fcPngPixelFormat.Auto,
                         maxTasks = 2,
+                        imageFilters = fcPngImageFilters.Default,
+                        compressionLevel = -1,
+                        compressionMemLevel = -1,
+                        compressionStrategy = -1,
+                        compressionWindowBits = -1,
+                        compressionMethod = -1,
+                        compressionBufferSize = -1,
                     };
                 }
             }

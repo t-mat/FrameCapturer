@@ -24,6 +24,19 @@ namespace UTJ.FrameCapturer
             }
 
             m_config = (fcAPI.fcPngConfig)config;
+
+            switch(m_config.compressionMode) {
+            default:
+            case fcAPI.fcPngCompressionMode.Default:
+            case fcAPI.fcPngCompressionMode.Slow:
+                // do nothing
+                break;
+            case fcAPI.fcPngCompressionMode.Fast:
+                m_config.imageFilters = fcAPI.fcPngImageFilters.None;
+                m_config.compressionLevel = 1;
+                break;
+            }
+
             m_ctx = fcAPI.fcPngCreateContext(ref m_config);
             m_outPath = outPath;
             m_frame = 0;
